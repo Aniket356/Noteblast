@@ -1,0 +1,32 @@
+{% extends 'core/navbar.html' %}
+
+{% block content %}
+
+    {% load custom_tags %}
+    <div class="position-absolute top-50 start-50 translate-middle text-center">
+
+      <button
+        class='btn btn-sm 
+        {% if user_|is_group:"Teachers" %} btn-danger 
+        {% elif user_|is_group:"Students" %} btn-success 
+        {% elif user_|is_group:"Council Members" %} btn-warning 
+        {% else %} btn-primary 
+        {% endif %}
+        rounded-pill p-2'
+        style="width: 10rem; height: 10rem;">
+
+        <span class="fs-1">
+        {{user_.first_name|make_list|first}}{{user_.last_name|make_list|first}}
+        </span>
+
+      </button>
+
+      <div class=" p-5 mt-5 fs-3" style="border: 1px solid gray; border-radius: 5%;">
+        <p>Name: <b>{{user_.first_name}} {{user_.last_name}}</b></p>
+        <p>Class: <b>{{user_.grade}}</b></p>
+        <p>Username: <b>{{user_.username}}</b></p>
+        <a href="{% url 'home' %}" class="btn btn-primary" style="width: fit-content;">Go back</a>
+      </div>
+  </div>
+
+{% endblock content %}

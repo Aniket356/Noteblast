@@ -1,0 +1,21 @@
+
+{% extends 'core/navbar.html' %}
+
+{% block content %}
+
+    <div class="container" style="width: 80rem; margin: 5rem auto;">
+        <a href="{%url 'home'%}" class="btn btn-primary mb-2">Go back</a>
+        <div class="card p-5 m-auto">
+            <h1 class="text-center mt-5">{{post.title}}</h1>
+            <p>Posted by: <b>{{post.posted_by.username}}</b></p>
+            <p>Date posted: <b>{{post.date_posted}}</b></p>
+
+            {% if post.attachment %}
+            <a href="{{post.attachment.url}}" class="mb-3 p-2 btn btn-warning" style="width:fit-content">Download File</a>
+            {% endif %}
+
+            <p>{{post.description}}</p>
+        </div>
+    </div>
+
+{% endblock content %}

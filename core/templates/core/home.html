@@ -1,0 +1,57 @@
+
+    {% extends 'core/navbar.html' %}
+    
+    {% block content %}
+
+    {% load custom_tags %}
+
+    <div class="container" style="width:fit-content; margin-top: 5rem; word-break: break-all;">
+        {% for post in posts %}
+    
+        <div class="container p-5 mb-3 w-75" style="border: 1px solid gray; border-radius: 1rem;">
+            <p>
+                {% if post.posted_by %}
+                
+                <a href="{% url 'profile' username=post.posted_by.username%}" class='
+                btn btn-sm 
+                {% if post.posted_by|is_group:"Teachers" %} btn-danger 
+                {% elif post.posted_by|is_group:"Students" %} btn-success 
+                {% elif post.posted_by|is_group:"Council Members" %} btn-warning 
+                {% else %} btn-primary 
+                {% endif %}
+                rounded-pill p-2' style="width: 2.5rem; height:2.5rem">
+
+                {{post.posted_by.first_name|make_list|first}}{{post.posted_by.last_name|make_list|first}}</a>
+
+                <b>{{post.posted_by.username}}</b>
+
+                {% else %}
+
+                <button class='btn btn-sm btn-secondary rounded-pill disabled' style="width: 2.5rem; height:2.5rem">
+                    DU
+                </button>
+                Deleted User
+
+                {% endif %}
+
+            </p>
+
+                <h2>{{post.title}}</h2>
+    
+                {% if post.description|wordcount > 100 %}
+                    <p class="lead mt-3"><strong>{{ post.description|truncatewords:100 }}</strong></p>
+                    <a href="{{post.slug}}" class="link-primary mt-0">Read full post</a>
+                {% else %}
+                    <p class="lead mt-3"><strong>{{ post.description }}</strong></p>
+                {% endif %}
+                
+                {% if post.attachment %}
+                    <a href="{{post.attachment.url}}" class="btn btn-primary p-2 mt-2" style="width: fit-content">Download attachment</a>
+                {% endif %}
+
+        </div>
+                
+        {% endfor %}
+    </div>
+
+    {% endblock content %}
