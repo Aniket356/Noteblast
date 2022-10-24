@@ -8,8 +8,8 @@
       <button
         class='btn btn-sm 
         {% if user_|is_group:"Teachers" %} btn-danger 
-        {% elif user_|is_group:"Students" %} btn-success 
         {% elif user_|is_group:"Council Members" %} btn-warning 
+        {% elif user_|is_group:"Students" %} btn-success 
         {% else %} btn-primary 
         {% endif %}
         rounded-pill p-2'
