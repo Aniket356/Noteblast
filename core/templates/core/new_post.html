@@ -11,10 +11,16 @@
         </div>
         <div class="container">
             <form method="post" enctype="multipart/form-data">
+                {% load custom_tags %}
                 {% csrf_token %}
-                {% for field in form %}
-                    <div class="form-group">{{field.label_tag}} <br> {{field}}</div>
-                {% endfor %}
+                <div class="form-group">{{form.title.label_tag}} <br> {{form.title}}</div>
+
+                {% if user|is_group:"Teachers" %}
+                    <div class="form-group"><label>This post is for class: </label> <br> {{form.for_grade}}</div>
+                {% endif %}
+
+                <div class="form-group">{{form.description.label_tag}} <br> {{form.description}}</div>
+                <div class="form-group">{{form.attachment.label_tag}} <br> {{form.attachment}}</div>
                 <input type="submit" value="Post" class='btn btn-success'>
                 <a href="{% url 'home' %}" class="btn btn-danger">Cancel</a>
             </form>

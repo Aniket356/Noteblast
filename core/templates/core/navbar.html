@@ -33,8 +33,8 @@
             <a href="{% url 'profile' username=user.username%}" class='
             btn btn-sm 
             {% if user|is_group:"Teachers" %} btn-danger 
-            {% elif user|is_group:"Students" %} btn-success 
             {% elif user|is_group:"Council Members" %} btn-warning 
+            {% elif user|is_group:"Students" %} btn-success 
             {% else %} btn-primary 
             {% endif %}
             rounded-pill p-2' style="width: 2.5rem; height:2.5rem">

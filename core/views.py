@@ -5,12 +5,26 @@ from .models import Post
 from accounts.models import User
 from .forms import NewPostForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 
 
-class HomeView(LoginRequiredMixin, ListView):
-  model = Post
-  template_name = 'core/home.html'
-  context_object_name = 'posts'
+def home_view(request):
+  def user_in_group(user, group):
+    return user.groups.all().filter(name=group).exists()
+
+  if not user_in_group(request.user, "Teachers"):
+    posts = Post.objects.filter(posted_by__grade=request.user.grade) | Post.objects.filter(for_grade=request.user.grade)
+
+  else:
+    if request.GET.get('class'):
+      class_filter = request.GET.get('class')
+      posts = Post.objects.filter(posted_by__grade=class_filter) | Post.objects.filter(for_grade=class_filter)
+    else:
+      posts = Post.objects.all()
+
+  context = {'posts': posts, 'range': range(1, 13)}
+
+  return render(request, 'core/home.html', context)
 
 
 class PostDetailView(LoginRequiredMixin, DetailView):
