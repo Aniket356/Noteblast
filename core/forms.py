@@ -16,7 +16,8 @@ class NewPostForm(ModelForm):
         'class': 'mb-3 form-control'
       }),
       'description': Textarea(attrs={
-        'class': 'mb-3 form-control'
+        'class': 'mb-3 form-control',
+        'style': 'white-space: pre-wrap'
       }),
       'attachment': FileInput(attrs={
         'class': 'mb-3 form-control'

@@ -1,11 +1,10 @@
 from django.shortcuts import redirect, render
-from django.urls import reverse
-from django.views.generic import ListView, CreateView, DetailView
+from django.urls import reverse, reverse_lazy
+from django.views.generic import DetailView, DeleteView, UpdateView
 from .models import Post
-from accounts.models import User
 from .forms import NewPostForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Q
+from django.core.paginator import Paginator
 
 
 def home_view(request):
@@ -22,7 +21,11 @@ def home_view(request):
     else:
       posts = Post.objects.all()
 
-  context = {'posts': posts, 'range': range(1, 13)}
+  paginator = Paginator(posts, 10)
+  page_number = request.GET.get('page')
+  page_obj = paginator.get_page(page_number)  
+
+  context = {'posts': posts, 'range': range(1, 13), 'page_obj': page_obj}
 
   return render(request, 'core/home.html', context)
 
@@ -44,3 +47,8 @@ def new_post(request):
   else:
     form = NewPostForm()
   return render(request, 'core/new_post.html', {'form':form})
+
+class DeletePost(DeleteView):
+  model = Post
+  template_name = 'core/delete_post.html'
+  success_url = reverse_lazy('home')

@@ -1,71 +1,98 @@
+{% extends 'core/navbar.html' %} {% block content %} {% load custom_tags %}
 
-    {% extends 'core/navbar.html' %}
+<div class="container w-75" style="margin-top: 5rem; word-break: break-all">
+
+  {% if user|is_group:"Teachers" %}
+  <form action="{% url 'home' %}" method="get" class="mb-3 w-50 m-auto d-flex">
+    <select name="class" class="form-select">
+      <option selected>Select a class</option>
+      {% for i in range %}
+      <option value="{{i}}">Class {{i}}</option>
+      {% endfor %}
+    </select>
+    <input type="submit" value="Filter" class="btn btn-primary ms-2" />
+  </form>
+
+  {% endif %}
+  
+  {% for post in page_obj %}
+
+  <div
+    class="container p-5 mb-3 w-75 position-relative"
+    style="border: 1px solid gray; border-radius: 1rem">
+
+    <p>
+      {% if post.posted_by %}
+
+        <a
+        href="{% url 'profile' username=post.posted_by.username%}"
+        title="View Profile"
+        class="btn btn-sm {% if post.posted_by|is_group:'Teachers' %} btn-danger {% elif post.posted_by|is_group:'Council Members' %} btn-warning {% elif post.posted_by|is_group:'Students' %} btn-success {% else %} btn-primary {% endif %} rounded-pill p-2"
+        style="width: 2.5rem; height: 2.5rem">
+
+            {{post.posted_by.first_name|make_list|first}}{{post.posted_by.last_name|make_list|first}}
+        </a>
+
+      <b>{{post.posted_by.username}}</b>
+
+      {% else %}
+
+      <button
+        class="btn btn-sm btn-secondary rounded-pill disabled"
+        style="width: 2.5rem; height: 2.5rem">
+        DU
+      </button>
+      Deleted User
+      
+      {% endif %}
+    </p>
+
+    <h2>{{post.title}}</h2>
+
+    {% if post.description|wordcount > 100 %}
+    <p class="lead mt-3">
+      <strong>{{ post.description|truncatewords:100 }}</strong>
+    </p>
+
+    <p><a href="{{post.slug}}" class="link-primary mt-0">Read full post</a></p>
+
+    {% else %}
+
+    <p class="lead mt-3"><strong>{{ post.description }}</strong></p>
+
+    {% endif %}
     
-    {% block content %}
+    {% if post.attachment %}
+    <a
+      href="{{post.attachment.url}}"
+      class="btn btn-primary p-2 mt-2"
+      style="width: fit-content">
+      Download attachment
+    </a>
+    {% endif %}
 
-    {% load custom_tags %}
-
-    <div class="container w-75" style="margin-top: 5rem; word-break: break-all;">
-
-        {% if user|is_group:"Teachers" %}
-        <form action="{% url 'home' %}" method="get" class="mb-3 w-50 m-auto d-flex">
-            <select name="class" class="form-select">
-                <option selected>Select a class</option>
-                {% for i in range %}
-                <option value="{{i}}">Class {{i}}</option>
-                {% endfor %}
-            </select>
-            <input type="submit" value="Filter" class="btn btn-primary ms-2"/>
-        </form>
-
-        {% endif %}
-
-        {% for post in posts %}
-    
-        <div class="container p-5 mb-3 w-75" style="border: 1px solid gray; border-radius: 1rem;">
-            <p>
-                {% if post.posted_by %}
-                
-                <a href="{% url 'profile' username=post.posted_by.username%}" class='
-                btn btn-sm 
-                {% if post.posted_by|is_group:"Teachers" %} btn-danger 
-                {% elif post.posted_by|is_group:"Council Members" %} btn-warning 
-                {% elif post.posted_by|is_group:"Students" %} btn-success 
-                {% else %} btn-primary 
-                {% endif %}
-                rounded-pill p-2' style="width: 2.5rem; height:2.5rem">
-
-                {{post.posted_by.first_name|make_list|first}}{{post.posted_by.last_name|make_list|first}}</a>
-
-                <b>{{post.posted_by.username}}</b>
-
-                {% else %}
-
-                <button class='btn btn-sm btn-secondary rounded-pill disabled' style="width: 2.5rem; height:2.5rem">
-                    DU
-                </button>
-                Deleted User
-
-                {% endif %}
-
-            </p>
-
-                <h2>{{post.title}}</h2>
-    
-                {% if post.description|wordcount > 100 %}
-                    <p class="lead mt-3"><strong>{{ post.description|truncatewords:100 }}</strong></p>
-                    <a href="{{post.slug}}" class="link-primary mt-0">Read full post</a>
-                {% else %}
-                    <p class="lead mt-3"><strong>{{ post.description }}</strong></p>
-                {% endif %}
-                
-                {% if post.attachment %}
-                    <a href="{{post.attachment.url}}" class="btn btn-primary p-2 mt-2" style="width: fit-content">Download attachment</a>
-                {% endif %}
-
-        </div>
-                
-        {% endfor %}
+    {% if user == post.posted_by %}
+    <div class="m-3 position-absolute bottom-0 end-0">
+        <a href="/home/{{post.slug}}/delete" class="btn btn-md btn-dark" title="Delete"><i class="fa-solid fa-trash-can"></i></a>
     </div>
+    {% endif %}
+  </div>
 
-    {% endblock content %}
+
+  {% endfor %}
+
+  <nav aria-label="page navigation">
+    <ul class="pagination pagination-lg justify-content-center">
+      {% if page_obj.has_previous %}
+        <li class="page-item"><a href="?page={{ page_obj.previous_page_number }}" class="page-link">Previous Page</a></li>
+      {% endif %}
+
+      {% if page_obj.has_next %}
+        <li class="page-item"><a href="?page={{ page_obj.next_page_number }}" class="page-link">Next page</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+
+</div>
+
+{% endblock content %}
