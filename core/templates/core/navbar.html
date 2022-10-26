@@ -31,7 +31,7 @@
             
         <div>
 
-            <a href="{% url 'profile' username=user.username%}" class='
+            <a href="{% url 'profile' username=user.username%}?previous={{request.get_full_path}}" class='
             btn btn-sm 
             {% if user|is_group:"Teachers" %} btn-danger 
             {% elif user|is_group:"Council Members" %} btn-warning 

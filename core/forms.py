@@ -17,10 +17,24 @@ class NewPostForm(ModelForm):
       }),
       'description': Textarea(attrs={
         'class': 'mb-3 form-control',
-        'style': 'white-space: pre-wrap'
       }),
       'attachment': FileInput(attrs={
         'class': 'mb-3 form-control'
       })
     }
+
+class EditPostForm(ModelForm):
+
+  class Meta:
+    model = Post
+    fields = ('title', 'description')
     
+    widgets = {
+      'title': TextInput(attrs={
+        'class': ' mb-3 form-control'
+      }),
+      'description': Textarea(attrs={
+        'class': 'mb-3 form-control',
+        'style': 'white-space: pre-wrap'
+      })
+    }

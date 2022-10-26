@@ -14,18 +14,22 @@
   </form>
 
   {% endif %}
+
+  {% if not posts %}
+    <p class="fs-1 text-center text-secondary">No posts yet</p>
+  {% endif %}
   
   {% for post in page_obj %}
 
   <div
-    class="container p-5 mb-3 w-75 position-relative"
+    class="container p-5 mb-3 w-100 position-relative"
     style="border: 1px solid gray; border-radius: 1rem">
 
     <p>
       {% if post.posted_by %}
 
         <a
-        href="{% url 'profile' username=post.posted_by.username%}"
+        href="{% url 'profile' username=post.posted_by.username%}?previous={{request.get_full_path}}"
         title="View Profile"
         class="btn btn-sm {% if post.posted_by|is_group:'Teachers' %} btn-danger {% elif post.posted_by|is_group:'Council Members' %} btn-warning {% elif post.posted_by|is_group:'Students' %} btn-success {% else %} btn-primary {% endif %} rounded-pill p-2"
         style="width: 2.5rem; height: 2.5rem">
@@ -47,21 +51,10 @@
       {% endif %}
     </p>
 
-    <h2>{{post.title}}</h2>
+    <a href="/home/{{post.slug}}" class="text-decoration-none text-dark"><h2>{{post.title}}</h2></a>
 
-    {% if post.description|wordcount > 100 %}
-    <p class="lead mt-3">
-      <strong>{{ post.description|truncatewords:100 }}</strong>
-    </p>
+    <p class="lead mt-3" style="white-space: pre-wrap;"><b>{{ post.description|truncatewords_html:50 }}</b></p>
 
-    <p><a href="{{post.slug}}" class="link-primary mt-0">Read full post</a></p>
-
-    {% else %}
-
-    <p class="lead mt-3"><strong>{{ post.description }}</strong></p>
-
-    {% endif %}
-    
     {% if post.attachment %}
     <a
       href="{{post.attachment.url}}"
@@ -73,7 +66,8 @@
 
     {% if user == post.posted_by %}
     <div class="m-3 position-absolute bottom-0 end-0">
-        <a href="/home/{{post.slug}}/delete" class="btn btn-md btn-dark" title="Delete"><i class="fa-solid fa-trash-can"></i></a>
+      <a href="/home/{{post.slug}}/delete" class="btn btn-md btn-dark" title="Delete"><i class="fa-solid fa-trash-can"></i></a>
+      <a href="/home/{{post.slug}}/edit" class="btn btn-md btn-dark" title="Edit"><i class="fa-regular fa-pen-to-square"></i></i></a>
     </div>
     {% endif %}
   </div>
@@ -84,11 +78,11 @@
   <nav aria-label="page navigation">
     <ul class="pagination pagination-lg justify-content-center">
       {% if page_obj.has_previous %}
-        <li class="page-item"><a href="?page={{ page_obj.previous_page_number }}" class="page-link">Previous Page</a></li>
+        <li class="page-item"><a href="?page={{ page_obj.previous_page_number }}" class="page-link">Previous</a></li>
       {% endif %}
 
       {% if page_obj.has_next %}
-        <li class="page-item"><a href="?page={{ page_obj.next_page_number }}" class="page-link">Next page</a></li>
+        <li class="page-item"><a href="?page={{ page_obj.next_page_number }}" class="page-link">Next</a></li>
       {% endif %}
     </ul>
   </nav>

@@ -3,18 +3,31 @@
 
 {% block content %}
 
+    {% load custom_tags %}
+
     <div class="container" style="width: 80rem; margin: 5rem auto;">
         <a href="{%url 'home'%}" class="btn btn-primary mb-2">Go back</a>
         <div class="card p-5 m-auto">
-            <h1 class="text-center mt-5">{{post.title}}</h1>
-            <p>Posted by: <b>{{post.posted_by.username}}</b></p>
+            <h1 class="text-center mt-2">{{post.title}}</h1>
+            <div class="mb-3">
+                <a
+                href="{% url 'profile' username=post.posted_by.username %}?previous={{request.get_full_path}}"
+                title="View Profile"
+                class="btn btn-sm {% if post.posted_by|is_group:'Teachers' %} btn-danger {% elif post.posted_by|is_group:'Council Members' %} btn-warning {% elif post.posted_by|is_group:'Students' %} btn-success {% else %} btn-primary {% endif %} rounded-pill p-2"
+                style="width: 2.5rem; height: 2.5rem">
+                
+                <span>{{post.posted_by.first_name|make_list|first}}{{post.posted_by.last_name|make_list|first}}</span>
+                </a>
+                <b>{{post.posted_by.username}}</b>
+            </div>
+
             <p>Date posted: <b>{{post.date_posted}}</b></p>
 
             {% if post.attachment %}
             <a href="{{post.attachment.url}}" class="mb-3 p-2 btn btn-primary" style="width:fit-content">Download attachment</a>
             {% endif %}
 
-            <p>{{post.description}}</p>
+            <p style="white-space: pre-wrap;" class="lead fw-normal">{{post.description}}</p>
         </div>
     </div>
 

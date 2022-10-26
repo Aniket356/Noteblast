@@ -21,11 +21,15 @@
 
       </button>
 
+      {% if user_|is_group:"Teachers" %} <p class="fs-3 text-secondary">Teacher</p> {% endif %}
+
       <div class=" p-5 mt-5 fs-3" style="border: 1px solid gray; border-radius: 5%;">
         <p>Name: <b>{{user_.first_name}} {{user_.last_name}}</b></p>
+        {% if not user_|is_group:"Teachers" %}
         <p>Class: <b>{{user_.grade}}</b></p>
+        {% endif %}
         <p>Username: <b>{{user_.username}}</b></p>
-        <a href="{% url 'home' %}" class="btn btn-primary" style="width: fit-content;">Go back</a>
+        <a href="{{request.GET.previous}}" class="btn btn-primary" style="width: fit-content;">Go back</a>
       </div>
   </div>
 

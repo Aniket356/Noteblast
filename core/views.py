@@ -2,11 +2,12 @@ from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import DetailView, DeleteView, UpdateView
 from .models import Post
-from .forms import NewPostForm
+from .forms import NewPostForm, EditPostForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 
-
+@login_required
 def home_view(request):
   def user_in_group(user, group):
     return user.groups.all().filter(name=group).exists()
@@ -35,7 +36,7 @@ class PostDetailView(LoginRequiredMixin, DetailView):
   context_object_name = 'post'
   template_name = 'core/post_detail.html'
 
-
+@login_required
 def new_post(request):
   if request.POST:
     form = NewPostForm(request.POST, request.FILES)
@@ -48,7 +49,13 @@ def new_post(request):
     form = NewPostForm()
   return render(request, 'core/new_post.html', {'form':form})
 
-class DeletePost(DeleteView):
+class DeletePost(LoginRequiredMixin, DeleteView):
   model = Post
   template_name = 'core/delete_post.html'
+  success_url = reverse_lazy('home')
+
+class EditPost(LoginRequiredMixin, UpdateView):
+  model = Post
+  form_class = EditPostForm
+  template_name = 'core/edit_post.html'
   success_url = reverse_lazy('home')
