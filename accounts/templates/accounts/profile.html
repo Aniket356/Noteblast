@@ -7,28 +7,28 @@
 
       <button
         class='btn btn-sm 
-        {% if user_|is_group:"Teachers" %} btn-danger 
-        {% elif user_|is_group:"Council Members" %} btn-warning 
-        {% elif user_|is_group:"Students" %} btn-success 
+        {% if profile_user|is_group:"Teachers" %} btn-danger 
+        {% elif profile_user|is_group:"Council Members" %} btn-warning 
+        {% elif profile_user|is_group:"Students" %} btn-success 
         {% else %} btn-primary 
         {% endif %}
         rounded-pill p-2'
         style="width: 10rem; height: 10rem;">
 
         <span class="fs-1">
-        {{user_.first_name|make_list|first}}{{user_.last_name|make_list|first}}
+        {{profile_user.first_name|make_list|first}}{{profile_user.last_name|make_list|first}}
         </span>
 
       </button>
 
-      {% if user_|is_group:"Teachers" %} <p class="fs-3 text-secondary">Teacher</p> {% endif %}
+      {% if profile_user|is_group:"Teachers" %} <p class="fs-3 text-secondary">Teacher</p> {% endif %}
 
       <div class=" p-5 mt-5 fs-3" style="border: 1px solid gray; border-radius: 5%;">
-        <p>Name: <b>{{user_.first_name}} {{user_.last_name}}</b></p>
-        {% if not user_|is_group:"Teachers" %}
-        <p>Class: <b>{{user_.grade}}</b></p>
+        <p>Name: <b>{{profile_user.first_name}} {{profile_user.last_name}}</b></p>
+        {% if not profile_user|is_group:"Teachers" %}
+        <p>Class: <b>{{profile_user.grade}}</b></p>
         {% endif %}
-        <p>Username: <b>{{user_.username}}</b></p>
+        <p>Username: <b>{{profile_user.username}}</b></p>
         <a href="{{request.GET.previous}}" class="btn btn-primary" style="width: fit-content;">Go back</a>
       </div>
   </div>

@@ -36,7 +36,7 @@ def logged_out(request):
 
 @login_required
 def profile_view(request, username):
-  return render(request, 'accounts/profile.html', {'user_': User.objects.get(username=username)})
+  return render(request, 'accounts/profile.html', {'profile_user': User.objects.get(username=username)})
 
 
 
