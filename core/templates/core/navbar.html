@@ -29,12 +29,10 @@
           <li class="nav-item mb-2 me-2">
             <a class="btn btn-outline-success" aria-current="page" href="{% url 'create_post' %}">+New Post</a>
           </li>
-          <li class="nav-item mb-2 me-2">
-            <a class="btn btn-outline-danger" href="{% url 'logout' %}">Logout</a>
-          </li>
 
         </ul>
 
+        <a class="btn btn-outline-danger me-2" href="{% url 'logout' %}">Logout</a>
         <a href="{% url 'profile' username=user.username%}?previous={{request.get_full_path}}" class='
                 me-2
                 btn btn-sm 

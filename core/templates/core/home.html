@@ -9,15 +9,17 @@ Home
 <div class="container w-75" style="word-break: break-word">
 
   {% if user|is_group:"Teachers" %}
-  <form action="{% url 'home' %}" method="get" class="mb-3 w-50 m-auto d-flex">
-    <select name="class" class="form-select">
-      <option selected>Select a class</option>
-      {% for i in range %}
-      <option value="{{i}}">Class {{i}}</option>
-      {% endfor %}
-    </select>
-    <input type="submit" value="Filter" class="btn btn-primary ms-2" />
-  </form>
+  <div class="container w-auto">
+    <form action="{% url 'home' %}" method="get" class="mb-3 m-auto d-flex">
+      <select name="class" class="form-select">
+        <option selected>Select a class</option>
+        {% for i in range %}
+        <option value="{{i}}">Class {{i}}</option>
+        {% endfor %}
+      </select>
+      <input type="submit" value="Filter" class="btn btn-primary ms-2" />
+    </form>
+  </div>
 
   {% endif %}
 
@@ -58,19 +60,18 @@ Home
 
     <a href="/home/{{post.slug}}" class="text-decoration-none text-dark"><h2>{{post.title}}</h2></a>
 
-    <p class="lead mt-3" style="white-space: pre-wrap;"><b>{{ post.description|truncatewords_html:50 }}</b></p>
+    <p class="lead mt-3" style="white-space: pre-wrap;">{{ post.description|truncatewords_html:30 }}</p>
 
     {% if post.attachment %}
     <a
       href="{{post.attachment.url}}"
-      class="btn btn-primary p-2 mt-2"
-      style="width: fit-content">
-      Download attachment
+      class="btn btn-primary">
+      View attachment
     </a>
     {% endif %}
 
     {% if user == post.posted_by %}
-    <div class="m-3 position-absolute bottom-0 end-0">
+    <div class="m-2 position-absolute bottom-0 end-0">
       <a href="/home/{{post.slug}}/delete" class="btn btn-md btn-dark" title="Delete"><i class="fa-solid fa-trash-can"></i></a>
       <a href="/home/{{post.slug}}/edit" class="btn btn-md btn-dark" title="Edit"><i class="fa-regular fa-pen-to-square"></i></i></a>
     </div>

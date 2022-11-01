@@ -5,9 +5,9 @@
 {% block content %}
 
     {% load custom_tags %}
-    <div class="position-absolute top-50 start-50 translate-middle text-center">
+    <div class="position-absolute top-50 start-50 translate-middle text-center w-100">
 
-      <div class="container">
+      <div class="mb-5">
         <button
           class='btn btn-sm 
           {% if profile_user|is_group:"Teachers" %} btn-danger 
@@ -16,7 +16,7 @@
           {% else %} btn-primary 
           {% endif %}
           rounded-pill p-2'
-          style="width: 10rem; height: 10rem;">
+          style="width: 8rem; height: 8rem;">
 
           <span class="fs-1">
           {{profile_user.first_name|make_list|first}}{{profile_user.last_name|make_list|first}}
@@ -24,24 +24,26 @@
         </button>
 
         {% if profile_user|is_group:"Teachers" %} <p class="fs-3 text-secondary">Teacher</p> {% endif %}
-
       </div>
 
-        <div class=" p-5 mt-5 fs-2 border border-secondary shadow bg-light rounded-4">
-          <p>Name: <b>{{profile_user.first_name}} {{profile_user.last_name}}</b></p>
-          {% if not profile_user|is_group:"Teachers" %}
-          <p>Class: <b>{{profile_user.grade}}</b></p>
-          {% endif %}
-          <p>Username: <b>{{profile_user.username}}</b></p>
+      <hr class="border border-1 border-secondary opacity-50">
 
-          {% if user == profile_user %}
-          <a href="{% url 'change_password'%}" class="btn btn-dark">Change Password</a>
-          {% endif %}
+      <div class="p-3 mt-2 fs-2">
+        <p>Name: <b>{{profile_user.first_name}} {{profile_user.last_name}}</b></p>
+        {% if not profile_user|is_group:"Teachers" %}
+        <p>Class: <b>{{profile_user.grade}}</b></p>
+        {% endif %}
+        <p>Username: <b>{{profile_user.username}}</b></p>
 
-        </div>
-
+        {% if user == profile_user %}
+        <a href="{% url 'change_password'%}" class="btn btn-dark">Change Password</a>
+        {% endif %}
+      </div>
       <a href="{{request.GET.previous}}" class="btn btn-primary mt-3">Go back</a>
-      
-  </div>
+
+      <hr class="border border-1 border-secondary opacity-50">
+
+    </div>
+
 
 {% endblock content %}
