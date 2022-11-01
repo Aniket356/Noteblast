@@ -1,36 +1,47 @@
 {% extends 'core/navbar.html' %}
 
+{% block title %}Profile{% endblock title %}
+
 {% block content %}
 
     {% load custom_tags %}
     <div class="position-absolute top-50 start-50 translate-middle text-center">
 
-      <button
-        class='btn btn-sm 
-        {% if profile_user|is_group:"Teachers" %} btn-danger 
-        {% elif profile_user|is_group:"Council Members" %} btn-warning 
-        {% elif profile_user|is_group:"Students" %} btn-success 
-        {% else %} btn-primary 
-        {% endif %}
-        rounded-pill p-2'
-        style="width: 10rem; height: 10rem;">
+      <div class="container">
+        <button
+          class='btn btn-sm 
+          {% if profile_user|is_group:"Teachers" %} btn-danger 
+          {% elif profile_user|is_group:"Council Members" %} btn-warning 
+          {% elif profile_user|is_group:"Students" %} btn-success 
+          {% else %} btn-primary 
+          {% endif %}
+          rounded-pill p-2'
+          style="width: 10rem; height: 10rem;">
 
-        <span class="fs-1">
-        {{profile_user.first_name|make_list|first}}{{profile_user.last_name|make_list|first}}
-        </span>
+          <span class="fs-1">
+          {{profile_user.first_name|make_list|first}}{{profile_user.last_name|make_list|first}}
+          </span>
+        </button>
 
-      </button>
+        {% if profile_user|is_group:"Teachers" %} <p class="fs-3 text-secondary">Teacher</p> {% endif %}
 
-      {% if profile_user|is_group:"Teachers" %} <p class="fs-3 text-secondary">Teacher</p> {% endif %}
-
-      <div class=" p-5 mt-5 fs-3" style="border: 1px solid gray; border-radius: 5%;">
-        <p>Name: <b>{{profile_user.first_name}} {{profile_user.last_name}}</b></p>
-        {% if not profile_user|is_group:"Teachers" %}
-        <p>Class: <b>{{profile_user.grade}}</b></p>
-        {% endif %}
-        <p>Username: <b>{{profile_user.username}}</b></p>
-        <a href="{{request.GET.previous}}" class="btn btn-primary" style="width: fit-content;">Go back</a>
       </div>
+
+        <div class=" p-5 mt-5 fs-2 border border-secondary shadow bg-light rounded-4">
+          <p>Name: <b>{{profile_user.first_name}} {{profile_user.last_name}}</b></p>
+          {% if not profile_user|is_group:"Teachers" %}
+          <p>Class: <b>{{profile_user.grade}}</b></p>
+          {% endif %}
+          <p>Username: <b>{{profile_user.username}}</b></p>
+
+          {% if user == profile_user %}
+          <a href="{% url 'change_password'%}" class="btn btn-dark">Change Password</a>
+          {% endif %}
+
+        </div>
+
+      <a href="{{request.GET.previous}}" class="btn btn-primary mt-3">Go back</a>
+      
   </div>
 
 {% endblock content %}

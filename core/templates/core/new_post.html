@@ -1,9 +1,11 @@
 
 {% extends "core/navbar.html" %}
 
+{% block title %}New Post{% endblock title %}
+
 {% block content %}
 
-    <div style="margin-top: 5rem;">
+    <div class="container">
         <div class="d-flex justify-content-center">
             {% load static %}
             <img src="{%static 'colorkit.svg'%}" alt="LOGO" style="width: 3rem; height: 3rem;">

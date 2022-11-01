@@ -1,6 +1,12 @@
-{% extends 'core/navbar.html' %} {% block content %} {% load custom_tags %}
+{% extends 'core/navbar.html' %}
 
-<div class="container w-75" style="margin-top: 5rem; word-break: break-all">
+{% block title %}
+Home
+{% endblock title %}
+
+{% block content %} {% load custom_tags %}
+
+<div class="container w-75" style="word-break: break-word">
 
   {% if user|is_group:"Teachers" %}
   <form action="{% url 'home' %}" method="get" class="mb-3 w-50 m-auto d-flex">
@@ -22,8 +28,7 @@
   {% for post in page_obj %}
 
   <div
-    class="container p-5 mb-3 w-100 position-relative"
-    style="border: 1px solid gray; border-radius: 1rem">
+    class="container p-5 mb-3 w-100 position-relative rounded-4 border border-secondary shadow bg-light">
 
     <p>
       {% if post.posted_by %}
