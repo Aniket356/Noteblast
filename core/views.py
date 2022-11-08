@@ -16,7 +16,7 @@ def home_view(request):
     posts = Post.objects.filter(posted_by__grade=request.user.grade) | Post.objects.filter(for_grade=request.user.grade)
 
   else:
-    if request.GET.get('class'):
+    if request.GET.get('class') and request.GET.get('class') != 'Select a class':
       class_filter = request.GET.get('class')
       posts = Post.objects.filter(posted_by__grade=class_filter) | Post.objects.filter(for_grade=class_filter)
     else:

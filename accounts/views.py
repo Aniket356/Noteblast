@@ -1,7 +1,6 @@
 from ast import Pass
 from django.shortcuts import redirect, render
 from django.urls import reverse
-from .forms import CustomUserCreationForm, PasswordChange
 from django.contrib.auth import login
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import logout
@@ -10,22 +9,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 
 # Create your views here.
-
-def signup_view(request):
-  if request.POST:
-    form = CustomUserCreationForm(request.POST)
-
-    if form.is_valid():
-      user = form.save(commit=False)
-      user.save()
-      login(request, user)
-      return redirect('/')
-
-  else:
-    form = CustomUserCreationForm()
-
-  return render(request, 'registration/signup.html', {'form':form})
-
 class Login(LoginView):
   template_name = 'registration/login.html'
 

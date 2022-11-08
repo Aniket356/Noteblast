@@ -7,16 +7,16 @@
     {% load custom_tags %}
     <div class="position-absolute top-50 start-50 translate-middle text-center w-100">
 
-      <div class="mb-5">
+      <div class="mb-3">
         <button
-          class='btn btn-sm 
+          class='btn btn-lg
           {% if profile_user|is_group:"Teachers" %} btn-danger 
           {% elif profile_user|is_group:"Council Members" %} btn-warning 
           {% elif profile_user|is_group:"Students" %} btn-success 
           {% else %} btn-primary 
           {% endif %}
-          rounded-pill p-2'
-          style="width: 8rem; height: 8rem;">
+          rounded-pill'
+          style="width: 7rem; height: 7rem;">
 
           <span class="fs-1">
           {{profile_user.first_name|make_list|first}}{{profile_user.last_name|make_list|first}}
@@ -36,7 +36,8 @@
         <p>Username: <b>{{profile_user.username}}</b></p>
 
         {% if user == profile_user %}
-        <a href="{% url 'change_password'%}" class="btn btn-dark">Change Password</a>
+        <a class="btn btn-outline-danger me-2" href="{% url 'logout' %}">Logout</a>
+        <a href="{% url 'change_password'%}" class="btn btn-outline-dark">Change Password</a>
         {% endif %}
       </div>
       <a href="{{request.GET.previous}}" class="btn btn-primary mt-3">Go back</a>

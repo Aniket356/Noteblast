@@ -30,7 +30,7 @@ Home
   {% for post in page_obj %}
 
   <div
-    class="container p-5 mb-3 w-100 position-relative rounded-4 border border-secondary shadow bg-light">
+    class="container p-4 mb-3 w-100 position-relative rounded-4 border border-secondary shadow bg-light">
 
     <p>
       {% if post.posted_by %}
@@ -71,9 +71,9 @@ Home
     {% endif %}
 
     {% if user == post.posted_by %}
-    <div class="m-2 position-absolute bottom-0 end-0">
-      <a href="/home/{{post.slug}}/delete" class="btn btn-md btn-dark" title="Delete"><i class="fa-solid fa-trash-can"></i></a>
-      <a href="/home/{{post.slug}}/edit" class="btn btn-md btn-dark" title="Edit"><i class="fa-regular fa-pen-to-square"></i></i></a>
+    <div class="mb-4 me-2 position-absolute bottom-0 end-0">
+      <a href="/home/{{post.slug}}/delete" class="btn btn-sm btn-dark" title="Delete"><i class="fa-solid fa-trash-can"></i></a>
+      <a href="/home/{{post.slug}}/edit" class="btn btn-sm btn-dark" title="Edit"><i class="fa-regular fa-pen-to-square"></i></i></a>
     </div>
     {% endif %}
   </div>
