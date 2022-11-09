@@ -7,7 +7,7 @@ from .manager import UserManager
 
 class User(AbstractUser):
   email = models.EmailField(unique=True)
-  grade = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(12)], null=True)
+  grade = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(12)], null=True, blank=True)
 
   objects = UserManager()
 
