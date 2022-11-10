@@ -7,6 +7,7 @@ from django.contrib.auth import logout
 from .models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
+from .forms import PasswordChange
 
 # Create your views here.
 class Login(LoginView):
