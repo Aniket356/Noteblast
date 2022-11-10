@@ -1,4 +1,3 @@
-from ast import Pass
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.contrib.auth import login
@@ -8,6 +7,7 @@ from .models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from .forms import PasswordChange
+from django.core.exceptions import ValidationError
 
 # Create your views here.
 class Login(LoginView):
@@ -41,10 +41,7 @@ def password_change(request):
 
         return redirect(reverse('password_changed'))
       else:
-        return render(request, 'registration/change_password.html', {'error': 'You have entered wrong old password', 'form':form})
-
-    else:
-      return render(request, 'registration/change_password.html', {'error':'You have entered wrong old password','form': form})
+        form.add_error('old_password', ValidationError("You have entered wrong old password"))
 
   else:
     form = PasswordChange()
