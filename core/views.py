@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import DetailView, DeleteView, UpdateView
 from .models import Post
@@ -6,6 +6,7 @@ from .forms import NewPostForm, EditPostForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.core.exceptions import PermissionDenied
 
 @login_required
 def home_view(request):
@@ -49,13 +50,44 @@ def new_post(request):
     form = NewPostForm()
   return render(request, 'core/new_post.html', {'form':form})
 
-class DeletePost(LoginRequiredMixin, DeleteView):
-  model = Post
-  template_name = 'core/delete_post.html'
-  success_url = reverse_lazy('home')
+# class DeletePost(LoginRequiredMixin, DeleteView):
+#   model = Post
+#   template_name = 'core/delete_post.html'
+#   success_url = reverse_lazy('home')
+
+
+@login_required
+def delete_post(request, slug):
+  post = get_object_or_404(Post, slug=slug)
+
+  if request.user != post.posted_by:
+    raise PermissionDenied()
+
+  if request.POST:
+    post.delete()
+    return redirect(reverse('home'))
+
+  return render(request, 'core/delete_post.html', context={'post':post})
+
 
 class EditPost(LoginRequiredMixin, UpdateView):
   model = Post
   form_class = EditPostForm
   template_name = 'core/edit_post.html'
   success_url = reverse_lazy('home')
+
+
+# def edit_post(request, slug):
+#   post = get_object_or_404(Post, slug=slug)
+
+#   if request.user != post.posted_by:
+#     raise PermissionDenied()
+
+#   form = EditPostForm(request.POST or None, instance=post)
+#   if form.is_valid():
+#     form.save()
+#     return redirect(reverse('home'))
+
+#   form = EditPostForm()
+
+#   return render(request, 'core/edit_post.html', {'form':form})

@@ -27,7 +27,7 @@ class EditPostForm(ModelForm):
 
   class Meta:
     model = Post
-    fields = ('title', 'description')
+    fields = ('title', 'description', 'attachment')
     
     widgets = {
       'title': TextInput(attrs={
@@ -36,5 +36,8 @@ class EditPostForm(ModelForm):
       'description': Textarea(attrs={
         'class': 'mb-3 form-control',
         'style': 'white-space: pre-wrap'
+      }),
+      'attachment': FileInput(attrs={
+        'class': 'mb-3 form-control'
       })
     }

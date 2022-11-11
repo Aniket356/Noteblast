@@ -7,7 +7,7 @@
 
 <div class="container">
     <h1 class="text-center">Edit Your Post</h1>
-    <form action="" method="post">
+    <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {% for field in form %}
         <div class="form-group">

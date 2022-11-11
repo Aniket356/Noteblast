@@ -72,8 +72,8 @@ Home
 
     {% if user == post.posted_by %}
     <div class="mb-4 me-2 position-absolute bottom-0 end-0">
-      <a href="/home/{{post.slug}}/delete" class="btn btn-sm btn-dark" title="Delete"><i class="fa-solid fa-trash-can"></i></a>
-      <a href="/home/{{post.slug}}/edit" class="btn btn-sm btn-dark" title="Edit"><i class="fa-regular fa-pen-to-square"></i></i></a>
+      <a href="{% url 'delete_post' slug=post.slug %}" class="btn btn-sm btn-dark" title="Delete"><i class="fa-solid fa-trash-can"></i></a>
+      <a href="{% url 'edit_post' slug=post.slug %}" class="btn btn-sm btn-dark" title="Edit"><i class="fa-regular fa-pen-to-square"></i></i></a>
     </div>
     {% endif %}
   </div>
