@@ -50,24 +50,28 @@ def new_post(request):
     form = NewPostForm()
   return render(request, 'core/new_post.html', {'form':form})
 
-# class DeletePost(LoginRequiredMixin, DeleteView):
-#   model = Post
-#   template_name = 'core/delete_post.html'
-#   success_url = reverse_lazy('home')
+
+class DeletePost(LoginRequiredMixin, DeleteView):
+  model = Post
+  template_name = 'core/delete_post.html'
+  success_url = reverse_lazy('home')
+
+  def get_queryset(self):
+    return super().get_queryset().filter(posted_by=self.request.user)
 
 
-@login_required
-def delete_post(request, slug):
-  post = get_object_or_404(Post, slug=slug)
+# @login_required
+# def delete_post(request, slug):
+#   post = get_object_or_404(Post, slug=slug)
 
-  if request.user != post.posted_by:
-    raise PermissionDenied()
+#   if request.user != post.posted_by:
+#     raise PermissionDenied()
 
-  if request.POST:
-    post.delete()
-    return redirect(reverse('home'))
+#   if request.POST:
+#     post.delete()
+#     return redirect(reverse('home'))
 
-  return render(request, 'core/delete_post.html', context={'post':post})
+#   return render(request, 'core/delete_post.html', context={'post':post})
 
 
 class EditPost(LoginRequiredMixin, UpdateView):
@@ -75,6 +79,9 @@ class EditPost(LoginRequiredMixin, UpdateView):
   form_class = EditPostForm
   template_name = 'core/edit_post.html'
   success_url = reverse_lazy('home')
+
+  def get_queryset(self):
+    return super().get_queryset().filter(posted_by=self.request.user)
 
 
 # def edit_post(request, slug):
